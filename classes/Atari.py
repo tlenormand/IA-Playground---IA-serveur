@@ -194,6 +194,10 @@ class Atari(MasterClass):
                 if self.Logs_instance.config.get('can_send_logs'):
                     self.Logs_instance.send()
 
+                # reset unique values
+                self.Logs_instance.log['new_model'] = False
+                self.Logs_instance.log['done'] = False
+
                 if done:
                     break
 

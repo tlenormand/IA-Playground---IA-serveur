@@ -74,10 +74,6 @@ class Logs:
 
         self.display()
 
-        # reset unique values
-        self.log['new_model'] = False
-        self.log['done'] = False
-
     def is_in_docker(self):
         """ Check if the program is running in a docker container """
         with open('/proc/1/cgroup', 'rt') as ifh:
@@ -123,7 +119,8 @@ class Logs:
                 _log(f"Échec de l'envoi des logs. Code de réponse: {response.status_code}")
 
         except Exception as e:
-            _log(f"Erreur lors de l'envoi des logs. url: {url} - error: {e}")
+            # _log(f"Erreur lors de l'envoi des logs. url: {url} - error: {e}")
+            pass
 
     def encode_logs(self, data=None):
         """ Encode les logs pour les rendre sérialisables en JSON.
@@ -137,6 +134,9 @@ class Logs:
         if data is None:
             data = self.log
 
+        print("data::", data)
+        print()
+        
         def convert_to_json_serializable(obj):
             if isinstance(obj, np.integer):
                 return int(obj)
@@ -144,10 +144,19 @@ class Logs:
                 return float(obj)
             elif isinstance(obj, np.ndarray):
                 return obj.tolist()
+            elif isinstance(obj, np.bool_):
+                return bool(obj)
+            elif isinstance(obj, np.str_):
+                return str(obj)
             else:
                 return obj
 
         # Convertir les valeurs non sérialisables
+        print()
+        print()
+        print()
+        print("data::", data)
+        print()
         logs_serializable = {key: convert_to_json_serializable(value) for key, value in data.items()}
-
+        print("logs_serializable::", logs_serializable)
         return logs_serializable
