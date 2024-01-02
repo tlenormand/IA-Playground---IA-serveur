@@ -1,0 +1,5 @@
+gym
+tabulate
+gym[atari,accept-rom-license]
+docker
+jsonschema
