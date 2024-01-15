@@ -60,11 +60,8 @@ class Games:
     def action_to_output(self, action):
         game = self.games.get(self.game)
         inputs = game.get('inputs')
-        print("output::", inputs)
         for key, value in inputs.items():
-            print("key111::", key, action, value)
             if value == action:
-                print("key::", key)
                 return key
 
     def get_random_action(self):

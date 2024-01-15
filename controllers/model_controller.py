@@ -2,7 +2,7 @@
 
 import subprocess
 
-from classes._Logs import _log
+from classes.Log import log
 from classes.Model import Model
 
 
@@ -22,7 +22,7 @@ def delete_model_post_controller(data):
     try:
         subprocess.run(["rm", "-rf", model_path], capture_output=True, text=True, check=True)
     except Exception as e:
-        _log.write(f"Error when delete model: {e}")
+        log.write(f"Error when delete model: {e}")
         return {'success': False, 'message': f"Error when delete model", 'data': {'modelName': model_full_name}}
     
     return {'success': True, 'message': 'Model deleted', 'data': {'modelName': model_full_name}}
@@ -36,7 +36,7 @@ def get_model_docker_post_controller(data):
     try:
         subprocess.run(["docker", "cp", f"{docker_id}:app/{model_path_container}", model_path_host], capture_output=True, text=True, check=True)
     except Exception as e:
-        _log.write(f"Error when get model: {e}")
+        log.write(f"Error when get model: {e}")
         return {'success': False, 'message': f"Error when get model", 'data': {'modelName': model_full_name}}
 
     return {'success': True, 'message': 'Model got', 'data': {'modelName': model_full_name}}

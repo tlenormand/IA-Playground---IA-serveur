@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import requests
 import os
 
 from classes.Atari import Atari

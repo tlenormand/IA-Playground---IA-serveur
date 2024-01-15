@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-from classes._Logs import _log
+from classes.Log import log
 
 
 class MasterClass:
     def __init__(self, data):
+        super().__init__()
+
         self.user_id = data.get('user_id')
         self.model_name = data.get('model_name')
         self.in_docker = False
@@ -37,7 +39,7 @@ class MasterClass:
                         self.in_docker = True
                         return line.split('/')[-1]
         except Exception as e:
-            _log.write(f"Erreur lors de la récupération de l'ID du conteneur : {e}")
+            log.write(f"Erreur lors de la récupération de l'ID du conteneur : {e}")
 
     def get_host(self):
         return 'http://host.docker.internal' if self.in_docker else 'http://127.0.0.1'

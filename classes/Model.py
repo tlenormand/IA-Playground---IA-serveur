@@ -130,7 +130,6 @@ class Model(MasterClass):
         return self.get_model_full_path()
 
     def load_model(self):
-        print("self.get_model_full_path()::",self.get_model_full_path())
         self.model = K.models.load_model(self.get_model_full_path())
         self.model_target = K.models.clone_model(self.model)
         self.config['input_shape'] = self.model.layers[0].input_shape[1:]

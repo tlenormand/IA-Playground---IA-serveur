@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+from flask import Flask, jsonify, abort
 import numpy as np
 
 from globals.global_variables import PLAYERS
 from classes.Docker import Docker
 from classes.Atari import Atari
+from classes.Log import log
 
 
 def train_atari_post_controller(data):
@@ -29,17 +31,13 @@ def create_atari_post_controller(data):
     players_added = []
 
     for player in data['players']:
-        print("player name::", player['name'])
         if player['name'] in PLAYERS:
             del player['name']
 
         player["user_id"] = data.get("user_id")
         player["model_name"] = data.get("model_name")
 
-        print("player::", player)
-
         PLAYERS[player["name"]] = player
-        print("PLAYERS::",PLAYERS)
         PLAYERS[player["name"]]['Atari_instance'] = Atari(player)
 
         state, info = PLAYERS[player["name"]]['Atari_instance'].reset()
@@ -54,8 +52,6 @@ def create_atari_post_controller(data):
 
 def reset_atari_post_controller(data):
     details = {}
-
-    print("reset_atari_post_controller::", data)
 
     for player in data['players']:
         state, info = PLAYERS[player['name']]['Atari_instance'].reset()
@@ -81,7 +77,6 @@ def step_atari_post_controller(data):
     details = {}
 
     for player in data['players']:
-        print("player name::", player)
         if PLAYERS.get(player['name'])['type'] == 'ia':
             state, reward, done, info = PLAYERS[player['name']]['Atari_instance'].ia_step()
         else:
