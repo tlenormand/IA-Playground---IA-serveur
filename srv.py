@@ -4,7 +4,7 @@ import logging
 
 from flask import Flask, request
 
-from classes._Logs import _log
+from classes.Log import log as _log
 from routes.atari_route import atari_bp
 from routes.test_route import test_bp
 from routes.model_route import model_bp

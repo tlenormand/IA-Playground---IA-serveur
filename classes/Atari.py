@@ -4,13 +4,14 @@ import gym
 import numpy as np
 import tensorflow as tf
 
-from classes._Logs import _log
+from classes.Log import log
 from classes.MasterClass import MasterClass
 from classes.Memory import Memory
 from classes.Model import Model
 from classes.Games import Games
 from classes.Logs import Logs
 from classes.Docker import Docker
+from utils.env import set_env_from_file
 
 
 class Atari(MasterClass):
@@ -55,31 +56,40 @@ class Atari(MasterClass):
         self.Docker_instance = Docker(data)
 
     def quit(self):
-        _log.write("Quitting the program...")
-        _log.write("Collet the model on the api server...")
-        is_sent = self.Docker_instance.send_model()
+        log.write("Quitting the program...")
 
-        _log.write("Stopping the program...")
-        _log.write("Saving the model...")
-        self.Model.save_model()
-        # _log.write("Saving the logs...")
+        log.write("Saving the model...")
+        self.Model_instance.save_model()
+
+        # log.write("Send the model on the api server...")
+        # is_sent = self.Docker_instance.send_model()
+        # if is_sent is False:
+        #     log.write("Error while sending the model")
+
+        # log.write("Saving the logs...")
         # self.Logs_instance.save()
-        _log.write("Quitting the program...")
-        # self.Model.send_model()
+
+        log.write("Bye!")
+        exit()
 
     def build_env(self):
         try:
             return gym.make(f"ALE/{self.config['game']}")
         except Exception as e:
-            _log.write(f"Erreur lors de la création de l'environnement : {e}")
+            log.write(f"Erreur lors de la création de l'environnement : {e}")
 
     def train(self):
-        _log.write("Starting the training...")
+        log.write("Starting the training...")
 
         while True:
             state, info = np.array(self.env.reset(), dtype=object)
 
             for timestep in range(1, self.config.get('max_steps_per_episode')):
+                if (timestep == 1 or timestep % 100) == 0:
+                    env = set_env_from_file(".env")
+                    if env.get('can_train') == False or env.get('can_train') == 'False':
+                        self.quit()
+
                 if self.config.get('can_render') == True:
                     self.env.render()  # Adding this line would show the attempts of the agent in a pop up window but it slows down the training
 
@@ -214,7 +224,7 @@ class Atari(MasterClass):
             running_reward = np.mean(self.Memory_instance.episode_reward_history)
 
             if running_reward > 40:  # Condition to consider the task solved
-                _log.write(f"Solved at episode {self.Logs_instance.log['game_number_training']}!")
+                log.write(f"Solved at episode {self.Logs_instance.log['game_number_training']}!")
                 break
 
     def reset(self):
@@ -247,7 +257,7 @@ class Atari(MasterClass):
                 action = tf.argmax(action_probs[0]).numpy()
                 self.Logs_instance.log['action_type'] = 'predicted'
             except Exception as e:
-                # _log.error("While predicting action", e)
+                # log.error("While predicting action", e)
                 action = self.Game_instance.get_random_action()
                 # action = np.random.choice(list(GAMES[self.config['env']['game']]['inputs'].keys()))
                 self.Logs_instance.log['action_type'] = 'random'

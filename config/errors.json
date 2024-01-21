@@ -1,0 +1,78 @@
+{
+    "ContainerNotFound": {
+        "message": "Container not found",
+        "code": 404
+    },
+    "ImageCreationFailed": {
+        "message": "Image creation failed",
+        "code": 500
+    },
+    "ContainerCreationFailed": {
+        "message": "Container creation failed",
+        "code": 500
+    },
+    "EnvCreationFailed": {
+        "message": "Env creation failed",
+        "code": 500
+    },
+    "FolderCreationFailed": {
+        "message": "Folder creation failed",
+        "code": 500
+    },
+    "ModelCopyFailed": {
+        "message": "Model copy failed",
+        "code": 500
+    },
+    "EnvUpdateFailed": {
+        "message": "Env update failed",
+        "code": 500
+    },
+    "ContainerStartFailed": {
+        "message": "Container start failed",
+        "code": 500
+    },
+    "ContainerStopFailed": {
+        "message": "Container stop failed",
+        "code": 500
+    },
+    "DockerNotRunning": {
+        "message": "Docker is not running",
+        "code": 500
+    },
+    "validatorEndpointNotFound": {
+        "message": "Validator endpoint not found",
+        "code": 404
+    },
+    "validatorMethodNotFound": {
+        "message": "Validator method not found",
+        "code": 404
+    },
+    "validatorValidationError": {
+        "message": "Validator validation error",
+        "code": 400
+    },
+    "formatterEndpointNotFound": {
+        "message": "Formatter endpoint not found",
+        "code": 404
+    },
+    "formatterMethodNotFound": {
+        "message": "Formatter method not found",
+        "code": 404
+    },
+    "formatterValidationError": {
+        "message": "Formatter validation error",
+        "code": 400
+    },
+    "SendModelFailed": {
+        "message": "Send model failed",
+        "code": 500
+    },
+    "SendFailed": {
+        "message": "Send failed",
+        "code": 500
+    },
+    "RunTFContainerMainFailed": {
+        "message": "Run TF container main script failed",
+        "code": 500
+    }
+}

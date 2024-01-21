@@ -9,7 +9,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y python3-pip
 
-RUN pip install -r Docker/Dockerfile.tf.requirements.txt
+RUN pip install -r Docker/docker.tf.requirements.txt
 
 EXPOSE 3000
 

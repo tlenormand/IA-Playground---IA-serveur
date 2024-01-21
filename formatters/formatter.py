@@ -3,7 +3,7 @@
 from jsonschema import validate, ValidationError
 
 from formatters.formatter_schemas import schema
-from classes._Logs import _log
+from classes.Log import log
 
 
 def formatter(endpoint, method, data):
@@ -13,9 +13,8 @@ def formatter(endpoint, method, data):
                 validate(data, schema[endpoint][method])
                 return True
             else:
-                raise Exception(f"Error in formatter: Method {method} of {endpoint} not found")
+                log.exception("formatterMethodNotFound", endpoint=endpoint, method=method)
         else:
-            raise Exception(f"Error in formatter: Endpoint {endpoint} not found")
+            log.exception("formatterEndpointNotFound", endpoint=endpoint, method=method)
     except ValidationError as e:
-        _log.write(f"Validation error: {e}")
-        return False
+        log.exception("formatterValidationError", endpoint=endpoint, method=method, error=e)

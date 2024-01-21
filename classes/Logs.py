@@ -6,7 +6,7 @@ import requests
 
 import numpy as np
 
-from classes._Logs import _log
+from classes.Log import log
 from tabulate import tabulate
 
 
@@ -57,7 +57,7 @@ class Logs:
         table_data = list(map(list, zip(*table_data)))
         # Use the 'tabulate' library to format the data as a pipe-separated table
         table = tabulate(table_data, tablefmt='pipe')
-        _log.write(table)
+        log.write(table)
 
     def push(self):
         executed_time = time.time() - self.intermediate_time
@@ -116,10 +116,10 @@ class Logs:
             )
 
             if response.status_code != 200:
-                _log(f"Échec de l'envoi des logs. Code de réponse: {response.status_code}")
+                log(f"Échec de l'envoi des logs. Code de réponse: {response.status_code}")
 
         except Exception as e:
-            # _log(f"Erreur lors de l'envoi des logs. url: {url} - error: {e}")
+            # log(f"Erreur lors de l'envoi des logs. url: {url} - error: {e}")
             pass
 
     def encode_logs(self, data=None):
@@ -134,9 +134,6 @@ class Logs:
         if data is None:
             data = self.log
 
-        print("data::", data)
-        print()
-        
         def convert_to_json_serializable(obj):
             if isinstance(obj, np.integer):
                 return int(obj)
@@ -152,11 +149,6 @@ class Logs:
                 return obj
 
         # Convertir les valeurs non sérialisables
-        print()
-        print()
-        print()
-        print("data::", data)
-        print()
         logs_serializable = {key: convert_to_json_serializable(value) for key, value in data.items()}
-        print("logs_serializable::", logs_serializable)
+
         return logs_serializable

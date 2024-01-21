@@ -3,7 +3,7 @@
 from jsonschema import validate, ValidationError
 
 from validators.validator_schemas import schema
-from classes._Logs import _log
+from classes.Log import log
 
 
 def validator(request):
@@ -18,9 +18,10 @@ def validator(request):
                 validate(request.get_json(), schema[endpoint][request.method])
                 return True
             else:
-                raise Exception(f"Error in validator: Method {request.method} of {endpoint} not found")
+                log.exception("validatorMethodNotFound", endpoint=endpoint, method=request.method)
         else:
-            raise Exception(f"Error in validator: Endpoint {endpoint} not found")
+            log.exception("validatorEndpointNotFound", endpoint=endpoint, method=request.method)
     except ValidationError as e:
-        _log.write(f"Validation error: {e}")
+        log.exception("validatorValidationError", endpoint=endpoint, method=request.method, error=e)
+        log.write(f"Validation error: {e}")
         return False
